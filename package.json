@@ -1,0 +1,24 @@
+{
+  "name": "rolling-string-hash",
+  "version": "0.0.1",
+  "description": "Rolling hash class for strings",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "rolling-hash",
+    "string",
+    "hash"
+  ],
+  "author": "Alec Lownes",
+  "license": "ISC",
+  "dependencies": {
+    "big-integer": "^1.6.15",
+    "linkedlist": "^1.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
+  }
+}
