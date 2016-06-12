@@ -49,20 +49,24 @@ module.exports = class RollingStringHash{
     if (!x){
       x = 1;
     }
+    var removed = '';
     for (var i = 0; i < x; i++){
       if (this.length > 0){
         this.length--;
         var char = this.list.pop();
         this.hash = this.hash.minus(a.pow(this.length).multiply(char.charCodeAt(0)));
         this.hash = mod(this.hash, n);
+        removed += char;
       }
     }
+    return removed;
   }
 
   removeLeft(x){
     if (!x){
       x = 1;
     }
+    var removed = '';
     for (var i = 0; i < x; i++){
       if (this.length > 0){
         this.length--;
@@ -71,8 +75,14 @@ module.exports = class RollingStringHash{
         this.hash = mod(this.hash, n);
         this.hash = this.hash.multiply(ai);
         this.hash = mod(this.hash, n);
+        removed += char;
       }
     }
+    return removed;
+  }
+
+  getLength(){
+    return this.length;
   }
 
   getHash(){

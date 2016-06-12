@@ -25,10 +25,12 @@ Adds a string to the right side of the hash.
 #### `addLeft(string)`
 Adds a string to the left side of the hash. Keep in mind, adding a string of more than one character to the left side will reverse the added string, since it is added character-by-character.
 #### `removeRight(number = 1)`
-Removes a number of characters from the right side of the hash. If no number is specified, it removes one character.
+Removes a number of characters from the right side of the hash. If no number is specified, it removes one character. Returns the characters that were removed. If more than one was removed, the string will be in reversed order since they are removed character-by-character.
 #### `removeLeft(number = 1)`
-Removes a number of characters from the left side of the hash. If no number is specified, it removes one character.
+Removes a number of characters from the left side of the hash. If no number is specified, it removes one character. Returns the characters that were removed.
 #### `getHash()`
 Returns the JavaScript number representation of the hash value.
+#### `getLength()`
+Returns the length of the string being hashed.
 #### `equals(object)`
 Used to see if two Rolling String Hashes are equal.
