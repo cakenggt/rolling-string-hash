@@ -12,7 +12,7 @@ module.exports = class RollingStringHash{
   constructor(string){
     //hash = c1a^(0)+c2a^(1)+c3a^(2)+...+cka(k)
     this.hash = BigInteger();
-    //Found in Borland C/C++ entry of https://en.wikipedia.org/wiki/Linear_congruential_generator
+    //Found in C++11's minstd_rand entry of https://en.wikipedia.org/wiki/Linear_congruential_generator
 
     this.length = 0;
     this.list = new LinkedList();
@@ -97,6 +97,7 @@ function mod(num, m){
   return r;
 }
 
+//found in http://stackoverflow.com/a/26986636/3528026
 function xgcd(a, b) {
 
   if (b.equals(0)) {
