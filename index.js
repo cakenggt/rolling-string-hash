@@ -80,7 +80,7 @@ module.exports = class RollingStringHash{
   }
 
   equals(other){
-    if (other){
+    if (other && other instanceof RollingStringHash){
       return this.hash.eq(other.hash);
     }
     return false;
