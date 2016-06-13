@@ -48,6 +48,7 @@ describe('strings', function(){
     r2.removeLeft();
     r2.addRight('o');
     expect(r1.equals(r2)).to.be.true;
+    expect(r1.getString()).to.equal('hello');
   });
 });
 describe('correct direction', function(){

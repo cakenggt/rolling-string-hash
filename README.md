@@ -32,5 +32,7 @@ Removes a number of characters from the left side of the hash. If no number is s
 Returns the JavaScript number representation of the hash value.
 #### `getLength()`
 Returns the length of the string being hashed.
+#### `getString()`
+Returns the string being hashed. Runs in O(string.length) time.
 #### `equals(object)`
 Used to see if two Rolling String Hashes are equal.

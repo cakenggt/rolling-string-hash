@@ -89,6 +89,15 @@ module.exports = class RollingStringHash{
     return this.hash.toJSNumber();
   }
 
+  getString(){
+    var result = '';
+    while (this.list.next()){
+      result += this.list.current;
+    }
+    this.list.resetCursor();
+    return result;
+  }
+
   equals(other){
     if (other && other instanceof RollingStringHash){
       return this.hash.eq(other.hash);
