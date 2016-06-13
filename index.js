@@ -90,11 +90,11 @@ module.exports = class RollingStringHash{
   }
 
   getString(){
+    this.list.resetCursor();
     var result = '';
     while (this.list.next()){
       result += this.list.current;
     }
-    this.list.resetCursor();
     return result;
   }
 
