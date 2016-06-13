@@ -50,3 +50,17 @@ describe('strings', function(){
     expect(r1.equals(r2)).to.be.true;
   });
 });
+describe('correct direction', function(){
+  it('adding', function(){
+    var r1 = new RollingStringHash();
+    var r2 = new RollingStringHash("hello");
+    r1.addRight('lo');
+    r1.addLeft('hel');
+    expect(r1.equals(r2)).to.be.true;
+  });
+  it('removing', function(){
+    var r1 = new RollingStringHash('hello');
+    expect(r1.removeRight(2)).to.equal('lo');
+    expect(r1.removeLeft(3)).to.equal('hel');
+  });
+});

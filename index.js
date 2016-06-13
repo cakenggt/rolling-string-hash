@@ -56,7 +56,7 @@ module.exports = class RollingStringHash{
         var char = this.list.pop();
         this.hash = this.hash.minus(a.pow(this.length).multiply(char.charCodeAt(0)));
         this.hash = mod(this.hash, n);
-        removed += char;
+        removed = char + removed;
       }
     }
     return removed;
