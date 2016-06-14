@@ -20,5 +20,13 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.5.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cakenggt/rolling-string-hash.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cakenggt/rolling-string-hash/issues"
+  },
+  "homepage": "https://github.com/cakenggt/rolling-string-hash#readme"
 }
