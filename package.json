@@ -1,6 +1,6 @@
 {
   "name": "rolling-string-hash",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Rolling hash class for strings",
   "main": "index.js",
   "scripts": {
