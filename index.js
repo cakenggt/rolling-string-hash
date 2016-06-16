@@ -28,7 +28,7 @@ module.exports = class RollingStringHash{
   addRight(str){
     for (var i = 0; i < str.length; i++){
       this.list.push(str[i]);
-      this.hash = this.hash.plus(a.pow(this.length).multiply(str.charCodeAt(i)));
+      this.hash = this.hash.plus(a.modPow(this.length, n).multiply(str.charCodeAt(i)));
       this.hash = mod(this.hash, n);
       this.length++;
     }
@@ -54,7 +54,7 @@ module.exports = class RollingStringHash{
       if (this.length > 0){
         this.length--;
         var char = this.list.pop();
-        this.hash = this.hash.minus(a.pow(this.length).multiply(char.charCodeAt(0)));
+        this.hash = this.hash.minus(a.modPow(this.length, n).multiply(char.charCodeAt(0)));
         this.hash = mod(this.hash, n);
         removed = char + removed;
       }
