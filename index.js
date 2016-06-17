@@ -1,19 +1,15 @@
 'use strict';
 
 var LinkedList = require('linkedlist');
-var BigInteger = require('big-integer');
 
-var a = BigInteger(48271);
-var n = BigInteger(Math.pow(2, 31)-1);
-var ai = xgcd(a, n)[0];
+//bits chosen from common characters in unicode
+var bits = 16;//number of bits in the buzhash number
+var rollover = 1<<bits;//the rollover bit after a left shift
 
 module.exports = class RollingStringHash{
 
   constructor(string){
-    //hash = c1a^(0)+c2a^(1)+c3a^(2)+...+cka(k)
-    this.hash = BigInteger();
-    //Found in C++11's minstd_rand entry of https://en.wikipedia.org/wiki/Linear_congruential_generator
-
+    this.hash = 0;
     this.length = 0;
     this.list = new LinkedList();
 
@@ -21,15 +17,11 @@ module.exports = class RollingStringHash{
       this.addRight(string);
     }
   }
-  /* shifting to right requires multiplying by a
-    shifting to left requires dividing by a*/
 
-  //adding right will add a^length*charCode
   addRight(str){
     for (var i = 0; i < str.length; i++){
       this.list.push(str[i]);
-      this.hash = this.hash.plus(a.modPow(this.length, n).multiply(str.charCodeAt(i)));
-      this.hash = mod(this.hash, n);
+      this.hash = shift(this.hash)^str.charCodeAt(i);
       this.length++;
     }
   }
@@ -38,9 +30,7 @@ module.exports = class RollingStringHash{
   addLeft(str){
     for (var i = str.length-1; i >= 0; i--){
       this.list.unshift(str[i]);
-      this.hash = this.hash.multiply(a);
-      this.hash = this.hash.plus(str.charCodeAt(i));
-      this.hash = mod(this.hash, n);
+      this.hash = this.hash^shift(str.charCodeAt(i), this.length);
       this.length++;
     }
   }
@@ -54,8 +44,7 @@ module.exports = class RollingStringHash{
       if (this.length > 0){
         this.length--;
         var char = this.list.pop();
-        this.hash = this.hash.minus(a.modPow(this.length, n).multiply(char.charCodeAt(0)));
-        this.hash = mod(this.hash, n);
+        this.hash = shift(this.hash^char.charCodeAt(0), -1);
         removed = char + removed;
       }
     }
@@ -71,10 +60,7 @@ module.exports = class RollingStringHash{
       if (this.length > 0){
         this.length--;
         var char = this.list.shift();
-        this.hash = this.hash.minus(char.charCodeAt(0));
-        this.hash = mod(this.hash, n);
-        this.hash = this.hash.multiply(ai);
-        this.hash = mod(this.hash, n);
+        this.hash = this.hash^shift(char.charCodeAt(0), this.length);
         removed += char;
       }
     }
@@ -86,7 +72,7 @@ module.exports = class RollingStringHash{
   }
 
   getHash(){
-    return this.hash.toJSNumber();
+    return this.hash;
   }
 
   getString(){
@@ -100,7 +86,7 @@ module.exports = class RollingStringHash{
 
   equals(other){
     if (other && other instanceof RollingStringHash){
-      return this.hash.eq(other.hash);
+      return this.hash === other.hash;
     }
     return false;
   }
@@ -116,16 +102,26 @@ function mod(num, m){
   return r;
 }
 
-//found in http://stackoverflow.com/a/26986636/3528026
-function xgcd(a, b) {
-
-  if (b.equals(0)) {
-    return [BigInteger(1), BigInteger(0), a];
+function shift(num, k){
+  if (k === undefined){
+    k = 1;
   }
-
-  var temp = xgcd(b, a.mod(b));
-  var x = temp[0];
-  var y = temp[1];
-  var d = temp[2];
-  return [y, x.minus(y.multiply(a.divide(b))), d];
+  for (var x = 0; x < Math.abs(k); x++){
+    if (k < 0){
+      //rotate right
+      if (num & 1){
+        num = num | 1<<bits;
+      }
+      num = Math.floor(num/2);
+    }
+    else{
+      //rotate left
+      num *= 2;//shift to left
+      if (num & rollover){//a bit has rolled over
+        num = num | 1;//set the first bit to 1
+        num = num & (rollover-1);//remove the last bit
+      }
+    }
+  }
+  return num;
 }

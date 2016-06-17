@@ -14,7 +14,6 @@
   "author": "Alec Lownes",
   "license": "ISC",
   "dependencies": {
-    "big-integer": "^1.6.15",
     "linkedlist": "^1.0.1"
   },
   "devDependencies": {
