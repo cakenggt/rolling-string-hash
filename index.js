@@ -4,7 +4,7 @@ var LinkedList = require('linkedlist');
 
 //bits chosen from common characters in unicode
 var bits = 16;//number of bits in the buzhash number
-var rollover = 1<<bits;//the rollover bit after a left shift
+var validBitMask = (1<<bits)-1;//the bitmask of the valid range
 
 module.exports = class RollingStringHash{
 
@@ -36,7 +36,7 @@ module.exports = class RollingStringHash{
   }
 
   removeRight(x){
-    if (!x){
+    if (x === undefined){
       x = 1;
     }
     var removed = '';
@@ -52,7 +52,7 @@ module.exports = class RollingStringHash{
   }
 
   removeLeft(x){
-    if (!x){
+    if (x === undefined){
       x = 1;
     }
     var removed = '';
@@ -94,10 +94,10 @@ module.exports = class RollingStringHash{
 };
 
 function mod(num, m){
-  var r = num.mod(m);
-  if (r.lt(0))
+  var r = num%m;
+  if (r < 0)
   {
-      r = r.add(m);
+      r += m;
   }
   return r;
 }
@@ -106,22 +106,11 @@ function shift(num, k){
   if (k === undefined){
     k = 1;
   }
-  for (var x = 0; x < Math.abs(k); x++){
-    if (k < 0){
-      //rotate right
-      if (num & 1){
-        num = num | 1<<bits;
-      }
-      num = Math.floor(num/2);
-    }
-    else{
-      //rotate left
-      num *= 2;//shift to left
-      if (num & rollover){//a bit has rolled over
-        num = num | 1;//set the first bit to 1
-        num = num & (rollover-1);//remove the last bit
-      }
-    }
-  }
+  k = mod(k, bits);
+  //rotate left
+  num *= Math.pow(2, k);//shift to left k times
+  var rolloverBits = Math.floor(num/Math.pow(2, bits));//bits in places greater than 16
+  num = num & validBitMask;//removes all bits over place 16
+  num = num | rolloverBits;//add the extra bits to the beginning
   return num;
 }
