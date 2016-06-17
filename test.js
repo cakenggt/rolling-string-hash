@@ -65,3 +65,10 @@ describe('correct direction', function(){
     expect(r1.removeLeft(3)).to.equal('hel');
   });
 });
+describe('correct attributes', function(){
+  it('correct hash size', function(){
+    var largestPossibleHash = Math.pow(2, 17)-1;
+    var r1 = new RollingStringHash('asghadgahdlgfuhalfgahdsgliuashgldahg;sodifjhnlaghalsikdfuhngalghasliguhna');
+    expect(r1.hash).to.be.lt(largestPossibleHash);
+  });
+});
