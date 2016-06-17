@@ -4,7 +4,7 @@
 /*jslint mocha: true*/
 
 var expect = require('chai').expect;
-var RollingStringHash = require('./index');
+var RollingStringHash = require('../index');
 
 describe('functions', function(){
   it('add and remove right', function(){

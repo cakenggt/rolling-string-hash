@@ -1,6 +1,7 @@
 'use strict';
 
 var LinkedList = require('linkedlist');
+var numTable = require('./numTable').numTable;
 
 //bits chosen from common characters in unicode
 var bits = 16;//number of bits in the buzhash number
@@ -21,7 +22,7 @@ module.exports = class RollingStringHash{
   addRight(str){
     for (var i = 0; i < str.length; i++){
       this.list.push(str[i]);
-      this.hash = shift(this.hash)^str.charCodeAt(i);
+      this.hash = shift(this.hash)^getTranslatedHash(str[i]);
       this.length++;
     }
   }
@@ -30,7 +31,7 @@ module.exports = class RollingStringHash{
   addLeft(str){
     for (var i = str.length-1; i >= 0; i--){
       this.list.unshift(str[i]);
-      this.hash = this.hash^shift(str.charCodeAt(i), this.length);
+      this.hash = this.hash^shift(getTranslatedHash(str[i]), this.length);
       this.length++;
     }
   }
@@ -44,7 +45,7 @@ module.exports = class RollingStringHash{
       if (this.length > 0){
         this.length--;
         var char = this.list.pop();
-        this.hash = shift(this.hash^char.charCodeAt(0), -1);
+        this.hash = shift(this.hash^getTranslatedHash(char), -1);
         removed = char + removed;
       }
     }
@@ -60,7 +61,7 @@ module.exports = class RollingStringHash{
       if (this.length > 0){
         this.length--;
         var char = this.list.shift();
-        this.hash = this.hash^shift(char.charCodeAt(0), this.length);
+        this.hash = this.hash^shift(getTranslatedHash(char), this.length);
         removed += char;
       }
     }
@@ -113,4 +114,8 @@ function shift(num, k){
   num = num & validBitMask;//removes all bits over place 16
   num = num | rolloverBits;//add the extra bits to the beginning
   return num;
+}
+
+function getTranslatedHash(char){
+  return numTable[char.charCodeAt(0)];
 }

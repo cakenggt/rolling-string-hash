@@ -1,4 +1,4 @@
-var RollingStringHash = require('./index');
+var RollingStringHash = require('../index');
 var fs = require('fs');
 
 var csv = '';
